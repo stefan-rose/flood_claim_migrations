@@ -48,7 +48,7 @@ tm_shape(county_shp, projection = proj) + tm_polygons(col="lightgrey",alpha = 0.
               alpha=0.8,palette="PuRd",title="FEMA Disasters Declared") +
   tm_layout(frame = FALSE)
 
-png("study_area.png",pointsize = 11,height = 900,width = 1150,res = 150)
+png("disasters_pc.png",pointsize = 11,height = 900,width = 1150,res = 150)
 dev.off()
 
 
@@ -82,14 +82,14 @@ mig.fe_state <- felm(log(out_flow)~flood_disaster+other_disaster+total_claims+co
 #fe coastal zone lag added
 mig.fe_coastal <- felm(log10(out_flow)~flood_disaster+other_disaster+total_claims+HPI+Unemployment_Rate+Jan_tmin+lag_s_out_flow|
                          coastal|0|0,
-                       data = mig_data_v2,na.action = NULL)
+                       data = mig_clm_shp,na.action = NULL)
 #fe year manual lag added
 mig.fe_lag <- felm(log10(out_flow)~flood_disaster+other_disaster+total_claims+HPI+Unemployment_Rate+Jan_tmin+lag_s_out_flow|
                      year|0|0,
-                   data = mig_data_v2,na.action = NULL)
+                   data = mig_clm_shp,na.action = NULL)
 mig.ols_trend <- felm(out_flow~flood_disaster+other_disaster+total_claims+HPI+Unemployment_Rate+Jan_tmin+year+(year^4)|
                         0|0|0,
-                      data = mig_data_v2,na.action = NULL)
+                      data = mig_clm_shp,na.action = NULL)
 #no fe, standard ols
 mig.ols_lfe <- felm(log(out_flow)~flood_disaster+other_disaster+total_claims+coastal+nat_amenity_rank+
                       HPI+Unemployment_Rate+log(pop_density)+year
